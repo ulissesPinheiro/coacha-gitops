@@ -17,9 +17,8 @@ spec:
     spec:
       containers:
         - name: coacha
-          image: coacha:4.0
-          # Never = usa imagem local do Minikube (não tenta baixar do registry)
-          imagePullPolicy: Never
+          image: ghcr.io/ulissespinheiro/coacha:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           # Liveness: K8s reinicia o Pod se essa rota falhar

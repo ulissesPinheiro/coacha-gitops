@@ -1,0 +1,41 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Herda tudo da base
+resources:
+  - ../../base
+
+# Patches para o ambiente de DEV
+patches:
+  # Reduz réplicas para economizar recursos
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: coacha-deploy
+        namespace: coacha-app
+      spec:
+        replicas: 1
+        template:
+          spec:
+            containers:
+              - name: coacha
+                resources:
+                  requests:
+                    memory: "64Mi"
+                    cpu: "50m"
+                  limits:
+                    memory: "128Mi"
+                    cpu: "200m"
+
+  # Sobrescreve valores do ConfigMap para dev
+  - patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: coacha-config
+        namespace: coacha-app
+      data:
+        APP_ENV: "development"
+        APP_GREETING: "Olá do Dev! 🛠️"
+        MAX_STUDENTS: "10"
