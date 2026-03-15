@@ -1,0 +1,2 @@
+# Nunca commitar secrets
+k8s/secret.yaml
